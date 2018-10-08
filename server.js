@@ -24,9 +24,18 @@ app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
 
+//Request Header Parser Endpoint
+app.get("/api/whoami",(req,res) => {
+    let  ipadd = req.headers['x-forwarded-for'] || 
+    req.connection.remoteAddress || 
+    req.socket.remoteAddress ||
+    (req.connection.socket ? req.connection.socket.remoteAddress : null);     
+    res.json({"ipaddress":ipadd,"language":req.headers["accept-language"],"softwares":req.headers["user-agent"]});  
+
+})
 
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
